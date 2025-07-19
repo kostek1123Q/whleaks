@@ -1,20 +1,29 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-  <meta charset="UTF-8">
-  <title>Zleakuj kogo chcesz</title>
-  <link rel="stylesheet" href="style.css">
-  <script defer src="script.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zleakuj Kogo Chcesz</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>Anonimowe Ogłoszenia</h1>
-  <form id="messageForm">
-    <textarea id="message" placeholder="Wpisz swoje ogłoszenie..." required></textarea>
-    <button type="submit">Wyślij jako Anonim</button>
+  <h1>Zleakuj Kogo Chcesz</h1>
+  <h2>Anonimowe Leaki</h2>
+
+  <form id="postForm">
+    <input type="text" id="messageInput" placeholder="Twoje ogłoszenie..." required />
+    <button type="submit">➕ Dodaj</button>
   </form>
+
   <div id="messages"></div>
-  <footer>
-    <a href="info.html">O stronie</a>
-  </footer>
+
+  <div id="adminSection">
+    <form id="adminLoginForm">
+      <input type="password" id="adminPassword" placeholder="Hasło admina" required />
+      <button type="submit">🔐 Zaloguj</button>
+    </form>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
