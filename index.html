@@ -2,28 +2,114 @@
 <html lang="pl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Zleakuj Kogo Chcesz</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Anonimowe Wiadomości</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      padding: 1rem;
+    }
+    .container {
+      background: #222;
+      padding: 2rem;
+      border-radius: 10px;
+      width: 100%;
+      max-width: 500px;
+      box-shadow: 0 0 10px #000;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 1rem;
+      margin-top: 0.5rem;
+      border-radius: 5px;
+      border: none;
+      resize: none;
+      font-size: 1rem;
+    }
+    button {
+      margin-top: 1rem;
+      width: 100%;
+      padding: 1rem;
+      border: none;
+      background: #5865F2;
+      color: #fff;
+      font-size: 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .status {
+      margin-top: 1rem;
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
-  <h1>Zleakuj Kogo Chcesz</h1>
-  <h2>Wszystkie śmieciowe leaki/spam będą usuwane</h2>
-
-  <form id="postForm">
-    <input type="text" id="messageInput" placeholder="Twoje ogłoszenie..." required />
-    <button type="submit">➕ Dodaj</button>
-  </form>
-
-  <div id="messages"></div>
-
-  <div id="adminSection">
-    <form id="adminLoginForm">
-      <input type="password" id="adminPassword" placeholder="Hasło admina" required />
-      <button type="submit">🔐 Zaloguj</button>
-    </form>
+  <div class="container">
+    <h2>Wyślij anonimową wiadomość</h2>
+    <label for="nick">Twój nick (anonimowy):</label>
+    <input type="text" id="nick" placeholder="np. TajemniczyLis">
+    
+    <label for="message">Wiadomość:</label>
+    <textarea id="message" placeholder="Wpisz wiadomość..."></textarea>
+    
+    <button onclick="sendMessage()">Wyślij</button>
+    <div class="status" id="status"></div>
   </div>
 
-  <script src="script.js"></script>
+  <script>
+    const webhookURL = 'https://discord.com/api/webhooks/1391554398278385754/LRqlcru1aeh627xr_DXpyJ8JRvBshtnY1ENqcTWkigFQWA7Abt9Dojkwzm22M4-dfQnr';
+    let canSend = true;
+
+    function sendMessage() {
+      const nick = document.getElementById('nick').value.trim() || 'Anonim';
+      const message = document.getElementById('message').value.trim();
+      const status = document.getElementById('status');
+
+      if (!message) {
+        status.textContent = 'Wiadomość nie może być pusta.';
+        status.style.color = 'orange';
+        return;
+      }
+
+      if (!canSend) {
+        status.textContent = 'Poczekaj chwilę przed kolejnym wysłaniem (30s).';
+        status.style.color = 'orange';
+        return;
+      }
+
+      const content = `💬 **${nick}** napisał(a):\n${message}`;
+
+      fetch(webhookURL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ content })
+      })
+      .then(response => {
+        if (response.ok) {
+          status.textContent = 'Wiadomość została wysłana!';
+          status.style.color = 'lightgreen';
+          document.getElementById('message').value = '';
+          canSend = false;
+          setTimeout(() => {
+            canSend = true;
+            status.textContent = '';
+          }, 30000); // 30 sekund
+        } else {
+          status.textContent = 'Błąd podczas wysyłania wiadomości.';
+          status.style.color = 'red';
+        }
+      })
+      .catch(error => {
+        status.textContent = 'Nie udało się połączyć z webhookiem.';
+        status.style.color = 'red';
+      });
+    }
+  </script>
 </body>
 </html>
