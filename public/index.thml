@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>Chat Anonimowy</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="script.js"></script>
+</head>
+<body>
+  <h1>Anonimowe Ogłoszenia</h1>
+  <form id="messageForm">
+    <textarea id="message" placeholder="Wpisz swoje ogłoszenie..." required></textarea>
+    <button type="submit">Wyślij jako Anonim</button>
+  </form>
+  <div id="messages"></div>
+  <footer>
+    <a href="info.html">O stronie</a>
+  </footer>
+</body>
+</html>
